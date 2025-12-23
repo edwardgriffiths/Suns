@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suns Visual Archive | Gallery</title>
+    <style>
+        :root {
+            --bg: #000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(33.333vw, 1fr));
+            gap: 0;
+            margin-bottom: 5vh;
+            /* Subtle spacing between groups */
+        }
+
+        /* Adjust columns for larger screens */
+        @media (min-width: 1200px) {
+            section {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .preview-box {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            /* Square blocks */
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            /* Minimal separator */
+        }
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+            /* Previews only */
+            transform: scale(1.02);
+            /* Slight scale to hide edge artifacts if any */
+        }
+
+        .click-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-box:hover .click-overlay {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .play-hint {
+            opacity: 0;
+            color: #fff;
+            font-family: sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .preview-box:hover .play-hint {
+            opacity: 1;
+        }
+
+        /* Hide Scrollbars */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PRIMARY SUNS -->
+    <section>
+        <a href="Sun_1.html" class="preview-box"><iframe src="Sun_1.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_2.html" class="preview-box"><iframe src="Sun_2.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_3.html" class="preview-box"><iframe src="Sun_3.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_4.html" class="preview-box"><iframe src="Sun_4.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_5.html" class="preview-box"><iframe src="Sun_5.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_6.html" class="preview-box"><iframe src="Sun_6.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_7.html" class="preview-box"><iframe src="Sun_7.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_8.html" class="preview-box"><iframe src="Sun_8.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_9.html" class="preview-box"><iframe src="Sun_9.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_10.html" class="preview-box"><iframe src="Sun_10.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="Sun_11.html" class="preview-box"><iframe src="Sun_11.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+    </section>
+
+    <!-- RETRO GLOW -->
+    <section>
+        <a href="RetroGlow_1.html" class="preview-box"><iframe src="RetroGlow_1.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="RetroGlow_2.html" class="preview-box"><iframe src="RetroGlow_2.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="RetroGlow_3.html" class="preview-box"><iframe src="RetroGlow_3.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="RetroGlow_4.html" class="preview-box"><iframe src="RetroGlow_4.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="RetroGlow_5.html" class="preview-box"><iframe src="RetroGlow_5.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+        <a href="RetroGlow_6.html" class="preview-box"><iframe src="RetroGlow_6.html" loading="lazy"></iframe>
+            <div class="click-overlay"></div>
+        </a>
+    </section>
+
+
+
+</body>
+
+</html>

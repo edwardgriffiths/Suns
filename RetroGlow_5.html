@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Glow 5</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #ui-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            color: rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        #info {
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+            font-family: sans-serif;
+            font-size: 12px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading">Initializing RetroGlow...</div>
+    <div id="ui-container">
+        <div id="info">Retro Glow • Variation 5</div>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Shared Loader -->
+    <script src="js/sun-loader.js"></script>
+
+    <script>
+        // Wait for window load to ensure dependencies (THREE) are ready
+        window.addEventListener('load', () => {
+            if (typeof THREE !== 'undefined') {
+                initSunVisualizer({
+                    vertexShaderPath: 'shaders/retro_glow_5.vert',
+                    fragmentShaderPath: 'shaders/retro_glow_5.frag'
+                });
+            } else {
+                document.getElementById('loading').textContent = "Error: Three.js failed to load.";
+            }
+        });
+    </script>
+</body>
+
+</html>

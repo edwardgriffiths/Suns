@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            /* Colors sampled from your references */
+            --color-1: rgba(255, 120, 150, 0.6);
+            /* Soft Pink */
+            --color-2: rgba(120, 160, 255, 0.5);
+            /* Muted Blue */
+            --color-3: rgba(255, 200, 100, 0.5);
+            /* Soft Orange */
+            --color-4: rgba(180, 120, 255, 0.4);
+            /* Purple */
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* The container keeps everything inside the viewport */
+        .gradient-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            filter: blur(60px) contrast(1.2);
+            /* Blends the blobs together */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Individual Blobs */
+        .blob {
+            position: absolute;
+            width: 50vmax;
+            height: 50vmax;
+            border-radius: 50%;
+            mix-blend-mode: multiply;
+            /* Creates the "density" shifts seen in references */
+            opacity: 0.7;
+            animation: shift 25s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            background: var(--color-1);
+            top: 10%;
+            left: 10%;
+            animation-duration: 20s;
+        }
+
+        .blob-2 {
+            background: var(--color-2);
+            bottom: 10%;
+            right: 10%;
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            background: var(--color-3);
+            top: 20%;
+            right: 15%;
+            animation-duration: 30s;
+            animation-delay: -2s;
+        }
+
+        .blob-4 {
+            background: var(--color-4);
+            bottom: 20%;
+            left: 15%;
+            animation-duration: 22s;
+        }
+
+        @keyframes shift {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(15%, 10%) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-10%, 15%) scale(0.9);
+            }
+
+            100% {
+                transform: translate(5%, -5%) scale(1);
+            }
+        }
+
+        /* Adds the grainy texture present in the later reference images */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.04;
+            /* Very subtle grain */
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="gradient-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+
+    <div class="noise-overlay"></div>
+
+</body>
+
+</html>

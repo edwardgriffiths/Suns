@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+canvas {
+    display: block;
+}
+
+#ui-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+#info {
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-family: sans-serif;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+/* Retro / Dark Theme */
+body.retro {
+    background-color: #000;
+}
+
+body.retro #ui-container,
+body.retro #info {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+body.retro #info {
+    opacity: 0;
+    transition: opacity 2s ease;
+    margin-bottom: 0;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+body.retro:hover #info {
+    opacity: 1;
+}
+
+body.retro #loading {
+    color: #fff;
+}

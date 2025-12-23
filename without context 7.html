@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shifting Densities Lab</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
+
+        const App = () => {
+            // --- CONFIGURATION ---
+            const [blur, setBlur] = useState(80);
+            const [grainOpacity, setGrainOpacity] = useState(0.06);
+            const [speed, setSpeed] = useState(0.5);
+            const [showControls, setShowControls] = useState(false);
+            const [paletteIndex, setPaletteIndex] = useState(0);
+
+            const palettes = [
+                { name: "Pastel Dream", colors: ['#bde0fe', '#ffafcc', '#ffc8dd', '#cdb4db'] },
+                { name: "Ocean Mist", colors: ['#00f5d4', '#00bbf9', '#9b5de5', '#f15bb5'] },
+                { name: "Sunrise Glow", colors: ['#fee440', '#f15bb5', '#9b5de5', '#00bbf9'] },
+                { name: "Deep Density", colors: ['#5a189a', '#ff006e', '#ffbe0b', '#3a86ff'] }
+            ];
+
+            // --- BLOB LOGIC ---
+            const Blob = ({ color, index, speedFactor }) => {
+                const [pos, setPos] = useState({
+                    x: Math.random() * 60 + 20,
+                    y: Math.random() * 60 + 20
+                });
+                const velocity = useRef({
+                    x: (Math.random() - 0.5) * 0.1 * speedFactor,
+                    y: (Math.random() - 0.5) * 0.1 * speedFactor
+                });
+
+                useEffect(() => {
+                    let animationFrame;
+
+                    const update = () => {
+                        setPos(prev => {
+                            let nextX = prev.x + velocity.current.x * speed;
+                            let nextY = prev.y + velocity.current.y * speed;
+
+                            // Keep within borders with soft bounce
+                            if (nextX < 10 || nextX > 90) velocity.current.x *= -1;
+                            if (nextY < 10 || nextY > 90) velocity.current.y *= -1;
+
+                            return { x: nextX, y: nextY };
+                        });
+                        animationFrame = requestAnimationFrame(update);
+                    };
+
+                    update();
+                    return () => cancelAnimationFrame(animationFrame);
+                }, [speed, speedFactor]);
+
+                return (
+                    <div
+                        className="absolute rounded-full transition-colors duration-1000"
+                        style={{
+                            width: '60vmax',
+                            height: '60vmax',
+                            backgroundColor: color,
+                            left: `${pos.x}%`,
+                            top: `${pos.y}%`,
+                            transform: 'translate(-50%, -50%)',
+                            mixBlendMode: 'multiply',
+                            opacity: 0.6,
+                            filter: `blur(${blur}px)`,
+                        }}
+                    />
+                );
+            };
+
+            return (
+                <div className="relative w-full h-screen bg-white overflow-hidden touch-none select-none">
+
+                    {/* Background Layer */}
+                    <div className="absolute inset-0 z-0">
+                        {palettes[paletteIndex].colors.map((c, i) => (
+                            <Blob
+                                key={`${paletteIndex}-${i}`}
+                                color={c}
+                                index={i}
+                                speedFactor={1 + (i * 0.2)}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Texture Overlay (Grain) */}
+                    <div
+                        className="absolute inset-0 z-10 pointer-events-none"
+                        style={{
+                            opacity: grainOpacity,
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+                        }}
+                    />
+
+                    {/* Interactive Controls (The "Upgrades" Explorer) */}
+                    <div className={`absolute top-4 left-4 z-50 p-4 rounded-2xl bg-white/80 backdrop-blur-md shadow-lg transition-transform duration-300 ${showControls ? 'translate-x-0' : '-translate-x-[calc(100%+20px)]'}`}>
+                        <h2 className="text-sm font-bold mb-4 text-gray-800 uppercase tracking-widest">Aura Settings</h2>
+
+                        <div className="space-y-4 w-48 text-xs">
+                            <div>
+                                <label className="block mb-1 text-gray-500">Softness (Blur)</label>
+                                <input
+                                    type="range" min="20" max="150" value={blur}
+                                    onChange={(e) => setBlur(Number(e.target.value))}
+                                    className="w-full accent-blue-500"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block mb-1 text-gray-500">Grain Intensity</label>
+                                <input
+                                    type="range" min="0" max="0.2" step="0.01" value={grainOpacity}
+                                    onChange={(e) => setGrainOpacity(Number(e.target.value))}
+                                    className="w-full accent-blue-500"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block mb-1 text-gray-500">Shift Speed</label>
+                                <input
+                                    type="range" min="0" max="2" step="0.1" value={speed}
+                                    onChange={(e) => setSpeed(Number(e.target.value))}
+                                    className="w-full accent-blue-500"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block mb-1 text-gray-500">Palette</label>
+                                <select
+                                    className="w-full p-2 rounded border bg-white"
+                                    value={paletteIndex}
+                                    onChange={(e) => setPaletteIndex(Number(e.target.value))}
+                                >
+                                    {palettes.map((p, i) => (
+                                        <option key={i} value={i}>{p.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Control Toggle Button */}
+                    <button
+                        onClick={() => setShowControls(!showControls)}
+                        className="absolute top-4 right-4 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-white/50 backdrop-blur-sm shadow-sm hover:bg-white transition-colors"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600">
+                            <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                    </button>
+
+                    {/* Guide Text */}
+                    <div className="absolute bottom-6 w-full text-center z-20 pointer-events-none">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-gray-300">Shifting Densities Lab</p>
+                    </div>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
